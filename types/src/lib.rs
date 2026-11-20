@@ -36,6 +36,23 @@ impl Size {
     }
 }
 
+/// The side of an order: buying or selling.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
+pub enum Side {
+    Buy,
+    Sell,
+}
+
+impl Side {
+    /// Returns the opposite side.
+    pub fn opposite(self) -> Self {
+        match self {
+            Side::Buy => Side::Sell,
+            Side::Sell => Side::Buy,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -78,5 +95,17 @@ mod tests {
         let size_a = Size::new(1);
         let size_b = Size::new(1);
         assert_eq!(size_a, size_b);
+    }
+
+    #[test]
+    fn side_opposite_buy_to_sell() {
+        let side = Side::Buy;
+        assert_eq!(side.opposite(), Side::Sell);
+    }
+
+    #[test]
+    fn side_opposite_sell_to_buy() {
+        let side = Side::Sell;
+        assert_eq!(side.opposite(), Side::Buy);
     }
 }
