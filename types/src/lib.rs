@@ -36,6 +36,11 @@ impl Size {
     pub fn lots(self) -> u64 {
         self.0
     }
+
+    /// Adds two sizes and returns the sum, or `None` if the sum overflows.
+    pub fn checked_add(self, other: Size) -> Option<Size> {
+        Some(Self(self.0.checked_add(other.0)?))
+    }
 }
 
 /// The side of an order: buying or selling.
@@ -162,6 +167,20 @@ mod tests {
         let size_a = Size::new(1);
         let size_b = Size::new(1);
         assert_eq!(size_a, size_b);
+    }
+
+    #[test]
+    fn size_checked_add_gives_sum() {
+        let size_a = Size::new(3);
+        let size_b = Size::new(4);
+        assert_eq!(size_a.checked_add(size_b), Some(Size::new(7)));
+    }
+
+    #[test]
+    fn size_checked_add_overflow_gives_none() {
+        let size_a = Size::new(u64::MAX);
+        let size_b = Size::new(1);
+        assert_eq!(size_a.checked_add(size_b), None);
     }
 
     #[test]
