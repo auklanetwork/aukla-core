@@ -1,0 +1,9 @@
+[package]
+name = "aukla-auction"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+aukla-types = { path = "../types" }

@@ -3,5 +3,12 @@
 version = 4
 
 [[package]]
+name = "aukla-auction"
+version = "0.0.0"
+dependencies = [
+ "aukla-types",
+]
+
+[[package]]
 name = "aukla-types"
 version = "0.0.0"
