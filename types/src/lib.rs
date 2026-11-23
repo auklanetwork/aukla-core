@@ -18,6 +18,14 @@ impl Price {
     pub fn ticks(self) -> u64 {
         self.0
     }
+
+    /// Returns the price in the middle of the two prices, rounded down to a
+    /// whole tick.
+    ///
+    /// The order of the two prices does not matter. The result never overflows.
+    pub fn midpoint(self, other: Price) -> Price {
+        Self(self.0.midpoint(other.0))
+    }
 }
 
 /// A size, as a whole number of lots.
@@ -147,6 +155,41 @@ mod tests {
         let price_a = Price::new(1);
         let price_b = Price::new(1);
         assert_eq!(price_a, price_b);
+    }
+
+    #[test]
+    fn price_midpoint_gives_middle() {
+        let price_a = Price::new(2000);
+        let price_b = Price::new(2002);
+        assert_eq!(price_a.midpoint(price_b), Price::new(2001));
+    }
+
+    #[test]
+    fn price_midpoint_rounds_down() {
+        let price_a = Price::new(2000);
+        let price_b = Price::new(2003);
+        assert_eq!(price_a.midpoint(price_b), Price::new(2001));
+    }
+
+    #[test]
+    fn price_midpoint_same_price_gives_that_price() {
+        let price_a = Price::new(2000);
+        let price_b = Price::new(2000);
+        assert_eq!(price_a.midpoint(price_b), Price::new(2000));
+    }
+
+    #[test]
+    fn price_midpoint_order_does_not_matter() {
+        let price_a = Price::new(2000);
+        let price_b = Price::new(2003);
+        assert_eq!(price_b.midpoint(price_a), Price::new(2001));
+    }
+
+    #[test]
+    fn price_midpoint_large_prices_do_not_overflow() {
+        let price_a = Price::new(u64::MAX);
+        let price_b = Price::new(u64::MAX - 2);
+        assert_eq!(price_b.midpoint(price_a), Price::new(u64::MAX - 1));
     }
 
     #[test]
