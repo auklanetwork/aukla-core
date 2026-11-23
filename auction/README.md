@@ -5,5 +5,6 @@ The clearing rule: from the offers of one market, the clearing price and the fil
 - `Offer`: an offer to buy or sell up to a size at a limit price or better. New orders, resting orders and quote sheet levels all reach the auction as offers.
 - `Clearing`: the outcome for one market in one block. One price for every fill, and the total lots that trade.
 - `AuctionError`: why the auction could not produce a result. A market where nothing trades is not an error.
+- `clearing_price`: finds the price at which the most lots can trade, and that number of lots. When several prices tie, it takes the middle of the lowest and the highest, rounded down to a whole tick.
 
 This crate knows nothing about balances, accounts or other markets. It depends only on `aukla-types`.
